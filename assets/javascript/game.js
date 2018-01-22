@@ -6,7 +6,10 @@ var words = [
 	"nissan",
 	"audi",
 	"buick",
-	"toyota"	
+	"toyota",
+	"bentley",
+	"jaguar",
+	"lexus"
 ];
 var chosenWord = words[Math.floor(Math.random()*words.length)];
 console.log(chosenWord);
@@ -15,6 +18,8 @@ var remainingLetters = chosenWord.length;
 console.log(remainingLetters);
 var guessesLeft = 10;
 var letterGuessed = [];
+var correctLetter;
+var duplicateLetter = [];
 
 for (var i = 0; i < chosenWord.length; i++) {
 	answerArray[i] = "_";
@@ -34,20 +39,34 @@ window.addEventListener("load", function() {
 //while (remainingLetters > 0) {
 document.onkeyup = function(event) {
 	var userGuess = event.key;
-	letterGuessed.push(userGuess);
-	document.getElementById("lettersGuessed").innerHTML = letterGuessed.join(" ");
+	console.log(remainingLetters);
+	//letterGuessed.push(userGuess.toUpperCase());
+	//document.getElementById("lettersGuessed").innerHTML = letterGuessed.join(" ");
 	
-	if (guessesLeft > 0) {
+	if (guessesLeft > 0 && remainingLetters > 0) {
 		for (var j = 0; j < chosenWord.length; j++) {
 			if (chosenWord[j] === userGuess) {
 				answerArray[j] = userGuess;
+				correctLetter = userGuess;
+				duplicateLetter.push(userGuess);
+				//remainingLetters--;
 				document.getElementById("wordGuess").innerHTML = answerArray.join(" ");
 			}
-			else {
-				guessesLeft--;
-				document.getElementById("guessesRemaining").innerHTML = guessesLeft;
-			}
+			
 		}
+
+	}
+		if (correctLetter !== userGuess) {
+			letterGuessed.push(userGuess.toUpperCase());
+			document.getElementById("lettersGuessed").innerHTML = letterGuessed.join(", ");
+			guessesLeft--;
+		}
+
+	else if (remainingLetters === 0) {
+		alert("Congratulation you won")
+	}
+	else if (guessesLeft === 0) {
+		alert("You lost, good luck next time!");
 	}
 	//get a guess from the player
 	//document.onkeyup = function(event) {
